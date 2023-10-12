@@ -13,7 +13,7 @@ export class UserEntity {
   email: string;
 
   @Column()
-  full_name: string;
+  fullName: string;
 
   @OneToMany(() => FileEntity, (file) => file.user)
   files: FileEntity[];
