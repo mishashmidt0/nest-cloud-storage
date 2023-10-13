@@ -8,11 +8,10 @@ import { UserEntity } from 'src/users/entities/user.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import * as process from 'process';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    UsersModule,
-    FilesModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -24,6 +23,9 @@ import { ConfigModule } from '@nestjs/config';
       entities: [UserEntity, FileEntity],
       synchronize: true,
     }),
+    UsersModule,
+    FilesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
