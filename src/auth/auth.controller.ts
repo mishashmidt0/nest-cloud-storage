@@ -9,7 +9,7 @@ import {
   Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthDto } from './dto/auth.dto';
 import { AuthGuard } from './auth.guard';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -23,7 +23,7 @@ export class AuthController {
   @Post('login')
   @ApiBody({ type: AuthDto })
   signIn(@Body() signInDto: AuthDto) {
-    return this.authService.signIn(signInDto);
+    return this.authService.login(signInDto);
   }
   @HttpCode(HttpStatus.OK)
   @Post('register')
@@ -32,6 +32,7 @@ export class AuthController {
     return this.authService.register(dto);
   }
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

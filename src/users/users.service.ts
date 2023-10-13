@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { SaveCreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
@@ -23,7 +23,7 @@ export class UsersService {
     });
   }
 
-  create(dto: CreateUserDto) {
+  create(dto: SaveCreateUserDto) {
     return this.repository.save(dto);
   }
 }

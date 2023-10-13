@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 
 @Entity('files')
@@ -7,13 +13,13 @@ export class FileEntity {
   id: number;
 
   @Column()
-  original_name: string;
+  originalName: string;
 
   @Column()
-  size: string;
+  size: number;
 
   @Column()
-  full_name: string;
+  filename: string;
 
   @Column()
   mimetype: string;
@@ -21,6 +27,6 @@ export class FileEntity {
   @ManyToOne(() => UserEntity, (user) => user.files)
   user: UserEntity;
 
-  @Column()
-  deleted_at: Date;
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

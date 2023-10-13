@@ -7,6 +7,8 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import * as bcrypt from 'bcryptjs';
+import * as process from 'process';
 
 @Injectable()
 export class AuthService {
@@ -15,21 +17,32 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn({ password, email }: AuthDto) {
+  async login({ password, email }: AuthDto) {
     const user = await this.usersService.findByEmail(email);
 
-    if (user?.password !== password) {
+    const isMatch = await bcrypt.compare(password, user.hash);
+
+    if (!isMatch) {
       throw new UnauthorizedException('Неверный логин или пароль');
     }
-    const payload = { sub: user.id, email: user.email };
+    const payload = { id: user.id, email: user.email };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
 
-  async register(dto: CreateUserDto) {
+  async register({ email, fullName, password }: CreateUserDto) {
     try {
-      return await this.usersService.create(dto);
+      const hash = await bcrypt.hash(
+        password,
+        Number(process.env.SALT_OF_ROUND),
+      );
+      const user = await this.usersService.create({ email, hash, fullName });
+
+      const payload = { id: user.id, email: user.email };
+      return {
+        access_token: await this.jwtService.signAsync(payload),
+      };
     } catch (e) {
       throw new ForbiddenException('Ошибка при регистрации');
     }
