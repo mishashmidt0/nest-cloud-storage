@@ -10,19 +10,16 @@ export class AppService {
     private chatRepository: Repository<ChatEntity>,
   ) {}
 
-  async createMessage(chat: ChatEntity): Promise<ChatEntity> {
-    return await this.chatRepository.save(chat);
+  async createMessage(dto: ChatEntity): Promise<ChatEntity> {
+    return await this.chatRepository.save(dto);
   }
 
   async getMessages(): Promise<ChatEntity[]> {
     return await this.chatRepository.find();
   }
 
-  remove(userId: number, ids: string) {
-    const idsArray = ids.split(',');
+  remove() {
     const qb = this.chatRepository.createQueryBuilder('chat');
-
-    qb.where('id IN (:...ids) AND userId = :userId', { ids: idsArray, userId });
     return qb.softDelete().execute();
   }
 }

@@ -1,7 +1,6 @@
-import { Controller, Delete, Get, Query, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiTags } from '@nestjs/swagger';
-import { UserIdDecorator } from 'src/decorators/user-id.decorator';
 
 @Controller('/api/chat')
 @ApiTags('/api/chat')
@@ -11,11 +10,12 @@ export class AppController {
   @Get('/')
   async chat(@Res() res) {
     const messages = await this.appService.getMessages();
+    console.log(messages);
     res.json(messages);
   }
 
   @Delete()
-  remove(@UserIdDecorator() userId: number, @Query('ids') ids: string) {
-    return this.appService.remove(userId, ids);
+  remove() {
+    return this.appService.remove();
   }
 }

@@ -7,7 +7,7 @@ import { ChatEntity } from 'src/app/entities/chat.entity';
 
 @Module({
   controllers: [AppController],
-  providers: [AppService,AppGateway],
+  providers: [AppService, AppGateway],
   exports: [AppService],
   imports: [TypeOrmModule.forFeature([ChatEntity])],
 })

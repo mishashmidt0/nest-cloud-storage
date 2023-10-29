@@ -1,21 +1,24 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   DeleteDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('chat')
 export class ChatEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
-  email: string;
+  user: string;
+
+  @Column()
+  roomId: string;
 
   @Column({ unique: true })
-  text: string;
+  msg: string;
 
   @CreateDateColumn()
   createdAt: Date;

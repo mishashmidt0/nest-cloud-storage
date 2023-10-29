@@ -4,12 +4,12 @@ import {
   OnGatewayInit,
   WebSocketServer,
   OnGatewayConnection,
-  OnGatewayDisconnect, MessageBody, ConnectedSocket
-} from "@nestjs/websockets";
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { AppService } from './app.service';
-import { ChatEntity } from './entities/chat.entity';
-
+import { ChatEntity } from 'src/app/entities/chat.entity';
+import { ForbiddenException } from '@nestjs/common';
 
 @WebSocketGateway({
   cors: {
@@ -24,11 +24,13 @@ export class AppGateway
   @WebSocketServer() server: Server;
 
   @SubscribeMessage('sendMessage')
-  async handleSendMessage(client: Socket, payload: string): Promise<void> {
-    console.log(payload);
-    await this.appService.createMessage({ createdAt: new Date(), text: payload ,email:'test@coms.er', id:1 });
-
-    this.server.emit('recMessage', payload);
+  async handleSendMessage(client: Socket, payload: ChatEntity): Promise<void> {
+    try {
+      await this.appService.createMessage(payload);
+      this.server.emit(`recMessage-${payload.roomId}`, payload.msg);
+    } catch (e) {
+      throw new ForbiddenException('Ошибка при отправки сообщения');
+    }
   }
 
   afterInit(server: Server) {
@@ -42,6 +44,7 @@ export class AppGateway
   }
 
   handleConnection(client: Socket, ...args: any[]) {
+    console.log(args);
     console.log(`Connected ${client.id}`);
     //Выполняем действия
   }
