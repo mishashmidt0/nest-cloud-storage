@@ -27,7 +27,7 @@ export class AppGateway
   async handleSendMessage(client: Socket, payload: ChatEntity): Promise<void> {
     try {
       await this.appService.createMessage(payload);
-      this.server.emit(`recMessage-${payload.roomId}`, payload.msg);
+      this.server.emit(`recMessage-${payload.roomId}`, JSON.stringify(payload));
     } catch (e) {
       throw new ForbiddenException('Ошибка при отправки сообщения');
     }

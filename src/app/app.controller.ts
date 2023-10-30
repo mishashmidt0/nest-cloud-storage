@@ -10,7 +10,6 @@ export class AppController {
   @Get('/')
   async chat(@Res() res) {
     const messages = await this.appService.getMessages();
-    console.log(messages);
     res.json(messages);
   }
 
