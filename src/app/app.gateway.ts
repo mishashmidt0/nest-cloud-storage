@@ -29,7 +29,7 @@ export class AppGateway
       await this.appService.createMessage(payload);
       this.server.emit(`recMessage-${payload.roomId}`, JSON.stringify(payload));
     } catch (e) {
-      throw new ForbiddenException('Ошибка при отправки сообщения');
+      throw new ForbiddenException(e);
     }
   }
 

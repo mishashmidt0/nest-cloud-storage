@@ -17,7 +17,7 @@ export class ChatEntity {
   @Column()
   roomId: string;
 
-  @Column({ unique: true })
+  @Column()
   msg: string;
 
   @CreateDateColumn()
