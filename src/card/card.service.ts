@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PackEntity } from 'src/pack/entities/pack.entity';
+import { CardEntity } from 'src/card/entities/card.entity';
 import { Repository } from 'typeorm';
-// TODO сохронять фото кард в облаке
+
 @Injectable()
-export class PackService {
+export class CardService {
   constructor(
-    @InjectRepository(PackEntity)
-    private repository: Repository<PackEntity>,
+    @InjectRepository(CardEntity)
+    private repository: Repository<CardEntity>,
   ) {}
   getPack() {
     const qb = this.repository.createQueryBuilder('file');

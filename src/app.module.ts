@@ -3,11 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { PackModule } from './pack/pack.module';
+import { CardModule } from './card/card.module';
 import { FilesModule } from './files/files.module';
 import { AppSocketModule } from './app/app.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { PackEntity } from 'src/pack/entities/pack.entity';
+import { CardEntity } from 'src/card/entities/card.entity';
 import { FileEntity } from 'src/files/entities/file.entity';
 import { ChatEntity } from 'src/app/entities/chat.entity';
 import * as process from 'process';
@@ -24,13 +26,14 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [UserEntity, FileEntity, ChatEntity, PackEntity],
+      entities: [UserEntity, FileEntity, ChatEntity, PackEntity, CardEntity],
       synchronize: true,
     }),
     UsersModule,
     FilesModule,
     AuthModule,
     PackModule,
+    CardModule,
     AppSocketModule,
   ],
   controllers: [AppController],
