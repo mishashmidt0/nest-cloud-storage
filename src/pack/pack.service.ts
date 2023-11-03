@@ -15,7 +15,7 @@ export class PackService {
     return qb.getMany();
   }
 
-  create(file: Express.Multer.File) {
+  create(file: Express.Multer.File, title: string) {
     return this.repository.save({
       filename: file.filename,
       name: file.filename,
