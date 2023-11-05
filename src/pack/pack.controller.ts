@@ -12,6 +12,7 @@ import { PackService } from 'src/pack/pack.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreatePackDto } from 'src/pack/dto/create-pack.dto';
+import { fileStorage } from 'src/files/storage';
 
 @Controller('api/pack')
 @ApiTags('pack')
@@ -25,7 +26,9 @@ export class PackController {
 
   @Post()
   @UseInterceptors(
-    FileFieldsInterceptor([{ name: 'avatar' }, { name: 'title' }]),
+    FileFieldsInterceptor([{ name: 'avatar' }, { name: 'title' }], {
+      storage: fileStorage,
+    }),
   )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -39,8 +42,7 @@ export class PackController {
     },
     @Body() { title }: CreatePackDto,
   ) {
-    console.log(files.avatar);
-    // return this.packService.create(files.avatar?.[0], title);
+    return this.packService.create(files.avatar?.[0], title);
   }
 
   @Delete()

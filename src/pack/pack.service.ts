@@ -18,7 +18,7 @@ export class PackService {
   create(file: Express.Multer.File, title: string) {
     return this.repository.save({
       filename: file.filename,
-      name: file.filename,
+      name: title,
       size: file.size,
       mimetype: file.mimetype,
       url: `uploads/${file.filename}`,

@@ -31,20 +31,22 @@ export class AuthService {
     };
   }
 
-  async register({ email, fullName, password }: CreateUserDto) {
+  async register({ email, password }: CreateUserDto) {
     try {
       const hash = await bcrypt.hash(
         password,
         Number(process.env.SALT_OF_ROUND),
       );
-      const user = await this.usersService.create({ email, hash, fullName });
-
+      const user = await this.usersService.create({
+        email,
+        hash,
+      });
       const payload = { id: user.id, email: user.email };
       return {
         access_token: await this.jwtService.signAsync(payload),
       };
     } catch (e) {
-      throw new ForbiddenException('Ошибка при регистрации');
+      throw new ForbiddenException(e);
     }
   }
 }
